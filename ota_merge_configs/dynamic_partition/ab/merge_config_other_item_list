@@ -1,8 +1,10 @@
+IMAGES/init_boot.img
 IMAGES/odm.img
 IMAGES/vendor.img
 IMAGES/vendor_dlkm.img
 META/boot_filesystem_config.txt
 META/file_contexts.bin
+META/init_boot_filesystem_config.txt
 META/kernel_configs.txt
 META/kernel_version.txt
 META/otakeys.txt
@@ -12,6 +14,7 @@ META/vendor_dlkm_filesystem_config.txt
 META/vendor_manifest.xml
 META/vendor_matrix.xml
 BOOT/*
+INIT_BOOT/*
 DATA/*
 ODM/*
 OTA/android-info.txt
