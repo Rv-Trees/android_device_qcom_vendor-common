@@ -2,6 +2,7 @@ IMAGES/init_boot.img
 IMAGES/odm.img
 IMAGES/vendor.img
 IMAGES/vendor_dlkm.img
+IMAGES/system_dlkm.img
 META/boot_filesystem_config.txt
 META/file_contexts.bin
 META/init_boot_filesystem_config.txt
@@ -11,6 +12,7 @@ META/otakeys.txt
 META/releasetools.py
 META/vendor_filesystem_config.txt
 META/vendor_dlkm_filesystem_config.txt
+META/system_dlkm_filesystem_config.txt
 META/vendor_manifest.xml
 META/vendor_matrix.xml
 BOOT/*
@@ -24,3 +26,4 @@ RECOVERY/*
 VENDOR/*
 VENDOR_BOOT/*
 VENDOR_DLKM/*
+SYSTEM_DLKM/*
