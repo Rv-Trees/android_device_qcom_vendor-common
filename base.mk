@@ -297,9 +297,6 @@ INIT += init.qcom.class_core.sh
 INIT += init.class_main.sh
 INIT += init.qcom.wifi.sh
 INIT += vold.fstab
-INIT += init.qcom.usb.rc
-INIT += init.msm.usb.configfs.rc
-INIT += init.qcom.usb.sh
 INIT += usf_post_boot.sh
 INIT += init.qcom.efs.sync.sh
 INIT += ueventd.qcom.rc
@@ -814,11 +811,11 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.servicetracker@1.2-service
 endif
 
-#memtrack HAL
-#PRODUCT_PACKAGES += \
-#    android.hardware.memtrack@1.0-impl \
-#    android.hardware.memtrack@1.0-service \
-#    memtrack.default
+# memtrack HAL
+# Uncomment the following two lines to enable memtrack hal
+
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.memtrack-service
 
 #debugApp FDA
 PRODUCT_PACKAGES += FDA
@@ -975,6 +972,13 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml \
     device/qcom/common/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml
+
+ifeq ($(TARGET_USES_QMAA),true)
+ifneq ($(TARGET_USES_QMAA_OVERRIDE_VIDEO),true)
+PRODUCT_COPY_FILES += \
+    device/qcom/common/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml
+endif
+endif
 
 ifneq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS),true)
 PRODUCT_COPY_FILES += \
