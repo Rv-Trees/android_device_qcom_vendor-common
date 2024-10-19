@@ -302,9 +302,6 @@ INIT += init.qcom.class_core.sh
 INIT += init.class_main.sh
 INIT += init.qcom.wifi.sh
 INIT += vold.fstab
-INIT += init.qcom.usb.rc
-INIT += init.msm.usb.configfs.rc
-INIT += init.qcom.usb.sh
 INIT += usf_post_boot.sh
 INIT += init.qcom.efs.sync.sh
 INIT += ueventd.qcom.rc
@@ -625,10 +622,6 @@ MM_AUDIO += libOmxAc3HwDec
 MM_CORE := libmm-omxcore
 MM_CORE += libOmxCore
 
-#WFD
-MM_WFD := libwfdaac
-MM_WFD := libwfdaac_vendor
-
 
 #MM_VIDEO
 MM_VIDEO := ast-mm-vdec-omx-test
@@ -824,10 +817,8 @@ PRODUCT_PACKAGES += \
 endif
 
 # memtrack HAL
-# Uncomment the following two lines to enable memtrack hal
-
-#PRODUCT_PACKAGES += \
-#    vendor.qti.hardware.memtrack-service
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.memtrack-service
 
 #debugApp FDA
 ifneq ($(TARGET_USES_QSPA),true)
@@ -898,7 +889,6 @@ PRODUCT_PACKAGES += $(LOC_API)
 PRODUCT_PACKAGES += $(MEDIA_PROFILES)
 PRODUCT_PACKAGES += $(MM_AUDIO)
 PRODUCT_PACKAGES += $(MM_CORE)
-PRODUCT_PACKAGES += $(MM_WFD)
 PRODUCT_PACKAGES += $(MM_VIDEO)
 PRODUCT_PACKAGES += $(OPENCORE)
 PRODUCT_PACKAGES += $(PPP)
@@ -973,6 +963,11 @@ PRODUCT_COPY_FILES := \
     frameworks/native/data/etc/android.software.device_id_attestation.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_id_attestation.xml \
     frameworks/native/data/etc/android.software.verified_boot.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.verified_boot.xml
 
+ifneq ($(filter $(TARGET_BOARD_PLATFORM), bengal),$(TARGET_BOARD_PLATFORM))
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.camera.concurrent.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.concurrent.xml
+endif
+
 # gps/location secuity configuration file
 PRODUCT_COPY_FILES += \
     device/qcom/common/sec_config:$(TARGET_COPY_OUT_VENDOR)/etc/sec_config
@@ -987,6 +982,13 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml \
     device/qcom/common/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml
+
+ifeq ($(TARGET_USES_QMAA),true)
+ifneq ($(TARGET_USES_QMAA_OVERRIDE_VIDEO),true)
+PRODUCT_COPY_FILES += \
+    device/qcom/common/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml
+endif
+endif
 
 ifneq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS),true)
 PRODUCT_COPY_FILES += \
@@ -1098,8 +1100,6 @@ PRODUCT_PACKAGES_DEBUG += \
 
 PRODUCT_PACKAGES += liboemaids_system
 PRODUCT_PACKAGES += liboemaids_vendor
-PRODUCT_PACKAGES += android.hardware.health@2.1-impl-qti
-PRODUCT_PACKAGES += android.hardware.health@2.1-service
 # framework detect libs
 PRODUCT_PACKAGES += libvndfwk_detect_jni.qti
 PRODUCT_PACKAGES += libqti_vndfwk_detect
